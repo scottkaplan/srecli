@@ -10,6 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 )
 
 var infoCmd = &cobra.Command{
@@ -29,7 +30,10 @@ For example:
 			os.Exit(1)
 		}
 
-		kubeconfig := "/home/scott/.kube/config"
+		kubeconfig, _ := cmd.Flags().GetString("kubeconfig")
+		if len(kubeconfig) == 0 {
+			kubeconfig = homedir.HomeDir()+"/.kube/config"
+		}
 		config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
 			panic(err.Error())

@@ -24,7 +24,10 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		namespace, _ := cmd.Flags().GetString("namespace")
 
-		kubeconfig := "/home/scott/.kube/config"
+		kubeconfig, _ := cmd.Flags().GetString("kubeconfig")
+		if len(kubeconfig) == 0 {
+			kubeconfig = homedir.HomeDir()+"/.kube/config"
+		}
 		config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
 			panic(err.Error())

@@ -9,28 +9,40 @@ import (
 // scaleCmd represents the scale command
 var scaleCmd = &cobra.Command{
 	Use:   "scale",
-	Short: "Manage the number of pods (replicas) running in a cluster",
-	Long: `Manage the number of pods (replicas) running in a cluster
+	Short: "Manage the number of pods (replicas) running in a deployment",
+	Long: `Manage the number of pods (replicas) running in a deployment
 For example:
 
-  sre scale --replicas 3 --pod healthy-pod: Run 3 healthy-pod pods
+  sre scale --replicas 3 --deployment prod-deploy: Run 3 pods in the prod-deploy deployment
 
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+		namespace, _ := cmd.Flags().GetString("namespace")
+		podName, _ := cmd.Flags().GetString("pod")
+		if len(podName) == 0 {
+			fmt.Println("--pod is required")
+			os.Exit(1)
+		}
+
+		kubeconfig, _ := cmd.Flags().GetString("kubeconfig")
+		if len(kubeconfig) == 0 {
+			kubeconfig = homedir.HomeDir()+"/.kube/config"
+		}
+		config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		clientset, err := kubernetes.NewForConfig(config)
+		if err != nil {
+			panic(err.Error())
+		}
+
 		fmt.Println("scale called")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(scaleCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// scaleCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// scaleCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	infoCmd.Flags().String("deployment", "", "name of deployment")
 }

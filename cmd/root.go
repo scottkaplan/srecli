@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
   sre list --namespace scott: List pods in namespace scott
   sre info --namespace scott: Print info about pods in namespace scott
   sre info --pod healthy-pod: Print info about healthy-pod
-  sre scale --replicas 3 --pod healthy-pod: Run 3 healthy-pod pods
+  sre scale --replicas 3 --deployment prod-deploy: Run 3 pods in the prod-deploy deployment
 `,
 }
 
@@ -31,14 +31,10 @@ func Execute() {
 
 func init() {
 	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sre.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	// global flags
 	rootCmd.PersistentFlags().String("namespace", "default", "Filter by namespace")
+	rootCmd.PersistentFlags().String("kubeconfig", "", "absolute path to the kubeconfig file")
 }
 
 
