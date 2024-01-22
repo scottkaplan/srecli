@@ -2,8 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
+	// metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
+
 )
 
 // scaleCmd represents the scale command
@@ -36,9 +42,11 @@ For example:
 		clientset, err := kubernetes.NewForConfig(config)
 		if err != nil {
 			panic(err.Error())
+			// Use clientset to shut up golang error
+			fmt.Println("%+v", clientset)
 		}
 
-		fmt.Println("scale called")
+		fmt.Println("scale called, namespace=%s", namespace)
 	},
 }
 

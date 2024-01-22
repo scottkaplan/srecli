@@ -1,6 +1,6 @@
 package main
 
-import "sre/cmd"
+import "srecli/cmd"
 
 func main() {
 	cmd.Execute()
