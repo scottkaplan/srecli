@@ -13,6 +13,7 @@ tar -xf google-cloud-cli-460.0.0-linux-x86_64.tar.gz
 gcloud auth login --no-launch-browser
 # Do the needful with the resulting URL
 gcloud config set project saas-test-sre-interview-410711
+gcloud container clusters get-credentials saas-sre-interview --region=europe-central2
 gcloud components install kubectl
 
 # Install go
@@ -39,4 +40,3 @@ sre scale --replicas 3 --deployment prod-deploy # Run 3 pods in the prod-deploy 
 
 ## To Do
 - Document scale
-- README.md
