@@ -7,7 +7,5 @@
 ## Run
 
 ## To Do
-- Test k8s library
-- Implement list
-- Implement info
-- Implement scale
+- Document scale
+- README.md
